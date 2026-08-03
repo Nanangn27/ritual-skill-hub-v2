@@ -1,0 +1,42 @@
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Env
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# Build artifacts
+artifacts/
+cache/
+typechain-types/
+coverage/
+coverage.json
+
+# Next.js
+frontend/.next/
+frontend/out/
+frontend/next-env.d.ts
+frontend/.vercel/
+
+# TypeScript
+*.tsbuildinfo
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Logs / temp
+*.log
+tmp/
+.tmp/
+
+# ABIs generated post-compile
+frontend/src/services/abis/*.json

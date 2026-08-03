@@ -1,0 +1,30 @@
+{
+  "name": "ritual-skill-hub-v2",
+  "version": "0.1.0",
+  "private": true,
+  "description": "AI Skill Marketplace on Ritual Testnet (chainId 1979) using Native AI Execution via LLM precompile 0x0802.",
+  "scripts": {
+    "compile": "node scripts/compile_solc.js",
+    "test": "node scripts/test_evm.js",
+    "deploy": "ts-node scripts/deploy.ts",
+    "fund": "ts-node scripts/fund_wallet.ts",
+    "seed": "ts-node scripts/seed_skills.ts",
+    "frontend:dev": "npm --prefix frontend run dev",
+    "frontend:build": "npm --prefix frontend run build"
+  },
+  "devDependencies": {
+    "solc": "0.8.26",
+    "@ethereumjs/vm": "^7.2.1",
+    "@ethereumjs/common": "^4.2.0",
+    "@ethereumjs/tx": "^5.2.1",
+    "@ethereumjs/util": "^9.0.2",
+    "ethers": "^6.13.2",
+    "dotenv": "^16.4.5",
+    "typescript": "^5.5.4",
+    "ts-node": "^10.9.2",
+    "@types/node": "^20.14.11"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
