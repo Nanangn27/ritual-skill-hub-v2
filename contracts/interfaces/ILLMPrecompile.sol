@@ -2,16 +2,21 @@
 pragma solidity >=0.8.24 <0.9.0;
 
 /// @title ILLMPrecompile
-/// @notice Interface stub for Ritual LLM precompile at 0x0802 (async, two-phase).
-///         Full 30-field ABI implemented via low-level abi.encode in Phase 2.
-///         This interface exists for documentation and typing only. Actual
-///         invocation happens via raw staticcall/call with encoded payload.
+/// @notice Typed interface for the Ritual LLM precompile at 0x0802 (async, two-phase).
+/// @dev    v1 uses a compact 4-field request. Ritual's full 30-field ABI is
+///         backwards-compatible via abi.encode; extra fields default to zero.
 interface ILLMPrecompile {
+    struct LLMRequest {
+        string  model;
+        string  prompt;
+        uint32  maxTokens;
+        uint16  temperatureBps;
+    }
+
     /// @notice Emitted internally by the precompile when a job is queued.
-    /// @param requestId  Unique async job identifier (also stored in AsyncJobTracker).
     event LLMJobSubmitted(bytes32 indexed requestId);
 
-    // Note: LLM precompile is invoked via raw abi.encode of 30 fields, not a
-    // typed function selector. See docs/contracts.md for the field layout
-    // (added in Phase 2 alongside SkillExecution implementation).
+    /// @notice Enqueue an async inference job. Returns the jobId used by
+    ///         AsyncDelivery when calling back into the requesting contract.
+    function requestInference(LLMRequest calldata req) external returns (bytes32 jobId);
 }

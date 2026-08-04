@@ -1,18 +1,53 @@
-// SPDX-License-Identifier: MIT
 // scripts/test_evm.js
-//
-// STUB -- Phase 3 (Local tooling)
-//
-// Full implementation lands in Phase 3. This will spin up @ethereumjs/vm
-// (cancun hardfork), deploy compiled artifacts from ./artifacts/, mock the
-// Ritual precompiles (0x0800..0x0820) and system contracts (AsyncDelivery,
-// RitualWallet, AsyncJobTracker), then execute the test files under
-// ./tests/*.test.js. Exit code non-zero on any failure.
-//
-// Kept as a stub in Phase 0 so `npm test` fails loudly rather than silently
-// succeeding on an empty pipeline.
+// Discover every tests/*.test.js file, run each in a fresh child process,
+// aggregate pass/fail, exit nonzero on any failure.
 
 'use strict';
 
-console.error('[test_evm] Not implemented yet -- lands in Phase 3.');
-process.exit(1);
+const fs = require('fs');
+const path = require('path');
+const { spawnSync } = require('child_process');
+
+const ROOT = path.join(__dirname, '..');
+const TESTS_DIR = path.join(ROOT, 'tests');
+
+function discover() {
+  if (!fs.existsSync(TESTS_DIR)) return [];
+  return fs
+    .readdirSync(TESTS_DIR)
+    .filter((n) => n.endsWith('.test.js'))
+    .sort()
+    .map((n) => path.join(TESTS_DIR, n));
+}
+
+function run(file) {
+  const rel = path.relative(ROOT, file);
+  process.stdout.write('\n>>> ' + rel + '\n');
+  const res = spawnSync(process.execPath, [file], {
+    cwd: ROOT,
+    stdio: 'inherit',
+  });
+  return res.status === 0;
+}
+
+function main() {
+  const files = discover();
+  if (files.length === 0) {
+    console.error('no test files found under tests/');
+    process.exit(1);
+  }
+  const results = [];
+  for (const f of files) {
+    results.push({ file: path.relative(ROOT, f), ok: run(f) });
+  }
+  const passed = results.filter((r) => r.ok).length;
+  const failed = results.length - passed;
+  console.log('\n==== SUITE SUMMARY ====');
+  for (const r of results) {
+    console.log('  ' + (r.ok ? '\u2714' : '\u2718') + ' ' + r.file);
+  }
+  console.log('  ' + passed + ' file(s) passed, ' + failed + ' failed');
+  process.exit(failed === 0 ? 0 : 1);
+}
+
+main();

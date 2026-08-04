@@ -1,0 +1,62 @@
+{
+  "contractName": "ILLMPrecompile",
+  "source": "interfaces/ILLMPrecompile.sol",
+  "abi": [
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "bytes32",
+          "name": "requestId",
+          "type": "bytes32"
+        }
+      ],
+      "name": "LLMJobSubmitted",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "string",
+              "name": "model",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "prompt",
+              "type": "string"
+            },
+            {
+              "internalType": "uint32",
+              "name": "maxTokens",
+              "type": "uint32"
+            },
+            {
+              "internalType": "uint16",
+              "name": "temperatureBps",
+              "type": "uint16"
+            }
+          ],
+          "internalType": "struct ILLMPrecompile.LLMRequest",
+          "name": "req",
+          "type": "tuple"
+        }
+      ],
+      "name": "requestInference",
+      "outputs": [
+        {
+          "internalType": "bytes32",
+          "name": "jobId",
+          "type": "bytes32"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x"
+}

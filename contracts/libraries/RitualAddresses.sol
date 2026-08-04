@@ -22,6 +22,9 @@ library RitualAddresses {
     ///         Used by SkillExecution to run AI skills.
     address internal constant LLM = 0x0000000000000000000000000000000000000802;
 
+    /// @notice Alias for LLM — matches Ritual\'s reference naming.
+    address internal constant LLM_INFERENCE = 0x0000000000000000000000000000000000000802;
+
     /// @notice JQ JSON transform precompile (synchronous).
     address internal constant JQ = 0x0000000000000000000000000000000000000803;
 
@@ -40,11 +43,11 @@ library RitualAddresses {
     address internal constant ASYNC_DELIVERY = 0x5A16214fF555848411544b005f7Ac063742f39F6;
 
     /// @notice AsyncJobTracker — records job lifecycle (Submitted -> Ready/Failed).
-    address internal constant ASYNC_JOB_TRACKER = 0x9F84e5C207c22C5748dEba24B215C8Fc65B99CDe;
+    address internal constant ASYNC_JOB_TRACKER = 0x9f84E5C207c22c5748DEBA24B215C8fC65B99cDE;
 
     /// @notice RitualWallet — funds TEE execution fees on behalf of a contract.
-    address internal constant RITUAL_WALLET = 0x532F5C3d15c94Ca5aBf83fEbaB0C4d9BCa243948;
+    address internal constant RITUAL_WALLET = 0x532F5C3D15c94ca5abF83FeBab0c4D9BCa243948;
 
     /// @notice Scheduler — deferred / periodic contract wake-ups.
-    address internal constant SCHEDULER = 0x56e79e3f0B4c9BFf7bB4f823EFB77e60fbc7e58B;
+    address internal constant SCHEDULER = 0x56e79e3f0B4C9BfF7bb4f823Efb77E60FbC7e58b;
 }
