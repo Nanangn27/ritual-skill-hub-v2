@@ -6,6 +6,7 @@
   "scripts": {
     "compile": "node scripts/compile_solc.js",
     "test": "node scripts/test_evm.js",
+    "typecheck": "tsc --noEmit",
     "deploy": "ts-node scripts/deploy.ts",
     "fund": "ts-node scripts/fund_wallet.ts",
     "seed": "ts-node scripts/seed_skills.ts",
