@@ -12,7 +12,7 @@ export default function RitualBrand({ className = '', compact = false, showText 
   return (
     <div className={`ritual-brand ${className}`.trim()} aria-label="Ritual logo">
       <img
-        src="/ritual-logo.svg"
+        src="/ritual-logo.png"
         alt="Ritual logo"
         className={`ritual-mark ${compact ? 'ritual-mark-compact' : ''}`.trim()}
       />

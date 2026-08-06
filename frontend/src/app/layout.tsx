@@ -6,9 +6,9 @@ export const metadata: Metadata = {
   title: 'Ritual Skill Hub',
   description: 'Connect your wallet, register skills, and run skill executions on the Ritual network.',
   icons: {
-    icon: '/ritual-logo.svg',
-    shortcut: '/ritual-logo.svg',
-    apple: '/ritual-logo.svg',
+    icon: '/ritual-logo.png',
+    shortcut: '/ritual-logo.png',
+    apple: '/ritual-logo.png',
   },
 };
 
