@@ -294,7 +294,7 @@ export default function SkillDashboard() {
         hash: 'Pending',
         gas: 'Estimating',
         status: 'Pending',
-      },
+      } satisfies HistoryEntry,
       ...current,
     ].slice(0, 6));
 
@@ -317,7 +317,7 @@ export default function SkillDashboard() {
         hash: 'Pending',
         gas: 'Estimating',
         status: 'Pending',
-      },
+      } satisfies HistoryEntry,
       ...current,
     ].slice(0, 6));
 
