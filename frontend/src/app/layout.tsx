@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
-import { WagmiConfig } from 'wagmi';
-import { wagmiConfig } from '@/lib/wagmi';
+import { WagmiProvider } from '@/components/providers/WagmiProvider';
 import '@/app/globals.css';
 
 export const metadata: Metadata = {
@@ -12,7 +11,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body>
-        <WagmiConfig config={wagmiConfig}>{children}</WagmiConfig>
+        <WagmiProvider>{children}</WagmiProvider>
       </body>
     </html>
   );
