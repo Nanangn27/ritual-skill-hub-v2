@@ -746,10 +746,13 @@ th {
   from { opacity: 0.65; }
   to { opacity: 1; }
 }
+
+.premium-shell {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+  gap: 1.5rem;
   width: min(1400px, 100%);
   margin: 0 auto;
-  display: grid;
-  gap: 1.5rem;
 }
 
 .panel {
