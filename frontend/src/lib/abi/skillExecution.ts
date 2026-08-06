@@ -1,0 +1,140 @@
+export const skillExecutionAbi = [
+  {
+    inputs: [
+      { internalType: 'address', name: 'initialOwner', type: 'address' },
+      { internalType: 'address', name: 'registry_', type: 'address' },
+    ],
+    stateMutability: 'nonpayable',
+    type: 'constructor',
+  },
+  { inputs: [], name: 'AlreadyDelivered', type: 'error' },
+  { inputs: [], name: 'EmptyString', type: 'error' },
+  {
+    inputs: [
+      { internalType: 'uint256', name: 'required', type: 'uint256' },
+      { internalType: 'uint256', name: 'provided', type: 'uint256' },
+    ],
+    name: 'InsufficientPayment',
+    type: 'error',
+  },
+  { inputs: [], name: 'NotOwner', type: 'error' },
+  {
+    inputs: [{ internalType: 'uint256', name: 'skillId', type: 'uint256' }],
+    name: 'SkillInactive',
+    type: 'error',
+  },
+  {
+    inputs: [{ internalType: 'bytes32', name: 'jobId', type: 'bytes32' }],
+    name: 'UnknownJob',
+    type: 'error',
+  },
+  { inputs: [], name: 'Unauthorized', type: 'error' },
+  { inputs: [], name: 'WithdrawFailed', type: 'error' },
+  { inputs: [], name: 'ZeroAddress', type: 'error' },
+  {
+    anonymous: false,
+    inputs: [
+      { indexed: true, internalType: 'address', name: 'previousOwner', type: 'address' },
+      { indexed: true, internalType: 'address', name: 'newOwner', type: 'address' },
+    ],
+    name: 'OwnerTransferred',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      { indexed: true, internalType: 'bytes32', name: 'jobId', type: 'bytes32' },
+      { indexed: true, internalType: 'address', name: 'user', type: 'address' },
+      { indexed: true, internalType: 'uint256', name: 'skillId', type: 'uint256' },
+      { indexed: false, internalType: 'bytes', name: 'result', type: 'bytes' },
+    ],
+    name: 'SkillRunCompleted',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      { indexed: true, internalType: 'bytes32', name: 'jobId', type: 'bytes32' },
+      { indexed: true, internalType: 'address', name: 'user', type: 'address' },
+      { indexed: true, internalType: 'uint256', name: 'skillId', type: 'uint256' },
+      { indexed: false, internalType: 'uint256', name: 'pricePaid', type: 'uint256' },
+    ],
+    name: 'SkillRunRequested',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      { indexed: true, internalType: 'address', name: 'to', type: 'address' },
+      { indexed: false, internalType: 'uint256', name: 'amount', type: 'uint256' },
+    ],
+    name: 'Withdrawn',
+    type: 'event',
+  },
+  {
+    inputs: [{ internalType: 'bytes32', name: 'jobId', type: 'bytes32' }],
+    name: 'getRecord',
+    outputs: [
+      {
+        components: [
+          { internalType: 'bytes32', name: 'jobId', type: 'bytes32' },
+          { internalType: 'address', name: 'user', type: 'address' },
+          { internalType: 'uint256', name: 'skillId', type: 'uint256' },
+          { internalType: 'uint256', name: 'pricePaid', type: 'uint256' },
+          { internalType: 'uint64', name: 'requestedAt', type: 'uint64' },
+          { internalType: 'bool', name: 'delivered', type: 'bool' },
+        ],
+        internalType: 'struct SkillExecution.ExecutionRecord',
+        name: '',
+        type: 'tuple',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'bytes32', name: 'jobId', type: 'bytes32' }, { internalType: 'bytes', name: 'result', type: 'bytes' }],
+    name: 'onLLMResult',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'owner',
+    outputs: [{ internalType: 'address', name: '', type: 'address' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'registry',
+    outputs: [{ internalType: 'address', name: '', type: 'address' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'uint256', name: 'skillId', type: 'uint256' },
+      { internalType: 'string', name: 'prompt', type: 'string' },
+    ],
+    name: 'runSkill',
+    outputs: [{ internalType: 'bytes32', name: 'jobId', type: 'bytes32' }],
+    stateMutability: 'payable',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'address', name: 'newOwner', type: 'address' }],
+    name: 'transferOwnership',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'address', name: 'to', type: 'address' }],
+    name: 'withdraw',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+] as const;
