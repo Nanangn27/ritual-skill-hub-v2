@@ -16,15 +16,6 @@ function SplashScreen() {
 export default function Home() {
   return (
     <main className="page-shell">
-      <header className="top-nav">
-        <div className="brand-block">
-          <RitualBrand compact={false} />
-          <div>
-            <p className="nav-title">Ritual Skill Hub</p>
-            <p className="nav-subtitle">On-chain skill orchestration</p>
-          </div>
-        </div>
-      </header>
       <Suspense fallback={<SplashScreen />}>
         <SkillDashboard />
       </Suspense>

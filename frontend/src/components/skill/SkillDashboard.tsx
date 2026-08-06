@@ -97,7 +97,7 @@ function getInitials(value: string) {
 
 export default function SkillDashboard() {
   const { address, isConnected, chain } = useAccount();
-  const { connect, isPending: connectPending } = useConnect();
+  const { connect, connectors, isPending: connectPending } = useConnect();
   const { disconnect } = useDisconnect();
   const { data: balanceData } = useBalance({ address, query: { enabled: !!address } });
 
@@ -771,7 +771,7 @@ export default function SkillDashboard() {
           {isConnected ? (
             <button className="button button--secondary" onClick={() => disconnect()}>Disconnect</button>
           ) : (
-            <button className="button button--primary" onClick={() => connect({ connector: injected() })} disabled={connectPending}>
+            <button className="button button--primary" onClick={() => connect({ connector: connectors[0] ?? injected() })} disabled={connectPending}>
               {connectPending ? 'Connecting…' : 'Connect Wallet'}
             </button>
           )}
