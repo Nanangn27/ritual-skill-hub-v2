@@ -6,7 +6,7 @@ const rpcUrl = process.env.NEXT_PUBLIC_RPC_URL ?? '';
 export const ritualTestnet = defineChain({
   id: chainId,
   name: 'Ritual Testnet',
-  nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
+  nativeCurrency: { name: 'Ritual', symbol: 'RIT', decimals: 18 },
   rpcUrls: {
     default: { http: rpcUrl ? [rpcUrl] : [] },
     public: { http: rpcUrl ? [rpcUrl] : [] },

@@ -55,7 +55,7 @@ const sampleMarketplace = [
     name: 'Ritual Summarizer',
     description: 'Summarizes protocol insights into concise actionable briefs.',
     creator: '0xA1b2…C4d5',
-    price: '0.015 ETH',
+    price: '0.015 RIT',
     category: 'Research',
     rating: 4.9,
   },
@@ -63,7 +63,7 @@ const sampleMarketplace = [
     name: 'Liquidity Oracle',
     description: 'Tracks treasury and liquidity conditions for strategy review.',
     creator: '0xD6e7…F8g9',
-    price: '0.022 ETH',
+    price: '0.022 RIT',
     category: 'Analytics',
     rating: 4.8,
   },
@@ -71,7 +71,7 @@ const sampleMarketplace = [
     name: 'Compliance Copilot',
     description: 'Flags risky wallet interactions and suspicious transaction patterns.',
     creator: '0xH2i3…J4k5',
-    price: '0.018 ETH',
+    price: '0.018 RIT',
     category: 'Security',
     rating: 4.7,
   },
@@ -247,7 +247,7 @@ export default function SkillDashboard() {
   }, [isRunError, runError]);
 
   const explorerBase = chain?.blockExplorers?.default?.url ?? 'https://sepolia.etherscan.io';
-  const balanceText = balanceData ? `${Number(balanceData.formatted).toFixed(3)} ${balanceData.symbol}` : '0.000 ETH';
+  const balanceText = balanceData ? `${Number(balanceData.formatted).toFixed(3)} ${balanceData.symbol}` : '0.000 RIT';
 
   const validationIssues = useMemo(() => {
     const issues: string[] = [];
@@ -264,7 +264,7 @@ export default function SkillDashboard() {
           name: skill.name,
           description: skill.metadataCID,
           creator: shortAddress(address ?? ''),
-          price: `${formatEthValue(skill.pricePerRun)} ETH`,
+          price: `${formatEthValue(skill.pricePerRun)} RIT`,
           category: 'On-chain',
           rating: 4.8,
         }))
@@ -486,7 +486,7 @@ export default function SkillDashboard() {
                       <div className="skill-stats">
                         <div>
                           <span>Earnings</span>
-                          <strong>{formatEthValue(skill.pricePerRun)} ETH</strong>
+                          <strong>{formatEthValue(skill.pricePerRun)} RIT</strong>
                         </div>
                         <div>
                           <span>Last execution</span>
@@ -526,7 +526,7 @@ export default function SkillDashboard() {
                     <div className={`progress-bar ${isRunning ? 'is-active' : ''}`} />
                   </div>
                   <button className="button button--primary" onClick={handleRun} disabled={!selectedSkill || !promptText.trim() || !isConnected || isRunning}>
-                    {isRunning ? 'Submitting…' : `Run Skill (${selectedSkill ? `${formatEthValue(selectedSkill.pricePerRun)} ETH` : '—'})`}
+                    {isRunning ? 'Submitting…' : `Run Skill (${selectedSkill ? `${formatEthValue(selectedSkill.pricePerRun)} RIT` : '—'})`}
                   </button>
                 </div>
                 <div className="execution-panel execution-panel--muted">
@@ -611,7 +611,7 @@ export default function SkillDashboard() {
                 </div>
                 <div className="analytics-card">
                   <h3>Gas usage</h3>
-                  <div className="mini-metric">0.0023 ETH</div>
+                  <div className="mini-metric">0.0023 RIT</div>
                 </div>
                 <div className="analytics-card">
                   <h3>Daily transactions</h3>
@@ -706,7 +706,7 @@ export default function SkillDashboard() {
               </div>
               <div className="stat-card">
                 <p>Gas used</p>
-                <h3>0.0023 ETH</h3>
+                <h3>0.0023 RIT</h3>
               </div>
               <div className="stat-card">
                 <p>Active skills</p>
@@ -791,6 +791,16 @@ export default function SkillDashboard() {
             <div className="top-pill">{chain?.name ?? 'Ritual Network'}</div>
             <div className="top-pill">{balanceText}</div>
             <div className="top-pill">{isConnected ? shortAddress(address) : 'Not connected'}</div>
+            {!isConnected && (
+              <button
+                type="button"
+                className="button button--primary topbar-connect-btn"
+                onClick={() => connect({ connector: connectors[0] ?? injected() })}
+                disabled={connectPending}
+              >
+                {connectPending ? 'Connecting…' : 'Connect Wallet'}
+              </button>
+            )}
             <button className="icon-button" type="button" aria-label="Notifications">🔔</button>
             <button className="icon-button" type="button" aria-label="Settings">⚙️</button>
           </div>
