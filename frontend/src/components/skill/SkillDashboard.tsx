@@ -505,245 +505,14 @@ export default function SkillDashboard() {
             </div>
           </motion.section>
         );
-      case 'execute':
-        return (
-          <motion.section initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="panel-stack">
-            <div className="panel-card panel-card--wide">
-              <div className="panel-card__header">
-                <div>
-                  <p className="eyebrow">Execution</p>
-                  <h2>Run a selected skill</h2>
-                </div>
-                <div className="pill">{isRunning ? 'Processing' : 'Ready'}</div>
-              </div>
-              <div className="execution-layout">
-                <div className="execution-panel">
-                  <label className="field">
-                    <span>Prompt</span>
-                    <textarea value={promptText} onChange={(event) => setPromptText(event.target.value)} placeholder="Ask the skill to generate a response or analysis." />
-                  </label>
-                  <div className="progress-track" aria-hidden="true">
-                    <div className={`progress-bar ${isRunning ? 'is-active' : ''}`} />
-                  </div>
-                  <button className="button button--primary" onClick={handleRun} disabled={!selectedSkill || !promptText.trim() || !isConnected || isRunning}>
-                    {isRunning ? 'Submitting…' : `Run Skill (${selectedSkill ? `${formatEthValue(selectedSkill.pricePerRun)} RIT` : '—'})`}
-                  </button>
-                </div>
-                <div className="execution-panel execution-panel--muted">
-                  <p className="eyebrow">Outcome</p>
-                  <h3>{selectedSkill ? selectedSkill.name : 'Select a skill'}</h3>
-                  <p>{selectedSkill ? 'A premium execution flow is ready for this skill and will submit the prompt to the Ritual precompile.' : 'Choose a skill from the marketplace or your portfolio to begin.'}</p>
-                  <div className="log-card">
-                    <p>Transaction hash</p>
-                    <strong>{runSkillWrite.data ? shortAddress(runSkillWrite.data as string) : 'Awaiting submission'}</strong>
-                  </div>
-                  <div className="log-card">
-                    <p>Execution logs</p>
-                    <strong>{isRunning ? 'Pending confirmation on-chain.' : 'Waiting for your input.'}</strong>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </motion.section>
-        );
-      case 'history':
-        return (
-          <motion.section initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="panel-stack">
-            <div className="panel-card">
-              <div className="panel-card__header">
-                <div>
-                  <p className="eyebrow">Transactions</p>
-                  <h2>History and activity</h2>
-                </div>
-                <div className="pill">{history.length} entries</div>
-              </div>
-              <div className="table-shell">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Timestamp</th>
-                      <th>Wallet</th>
-                      <th>Action</th>
-                      <th>Hash</th>
-                      <th>Gas</th>
-                      <th>Status</th>
-                      <th>Explorer</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {history.map((entry) => (
-                      <tr key={entry.id}>
-                        <td>{entry.timestamp}</td>
-                        <td title={entry.wallet}>{entry.wallet}</td>
-                        <td>{entry.action}</td>
-                        <td title={entry.hash}>{entry.hash}</td>
-                        <td>{entry.gas}</td>
-                        <td><span className={`status-badge ${entry.status.toLowerCase()}`}>{entry.status}</span></td>
-                        <td>{entry.hash !== '—' ? <a href={`${explorerBase}/tx/${entry.hash}`} target="_blank" rel="noreferrer">Open</a> : '—'}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </motion.section>
-        );
-      case 'analytics':
-        return (
-          <motion.section initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="panel-stack">
-            <div className="panel-card">
-              <div className="panel-card__header">
-                <div>
-                  <p className="eyebrow">Analytics</p>
-                  <h2>Performance insights</h2>
-                </div>
-              </div>
-              <div className="analytics-grid">
-                <div className="analytics-card">
-                  <h3>Execution activity</h3>
-                  <div className="bars">
-                    {[70, 96, 84, 110, 118].map((value, index) => <div key={index} className="bar" style={{ height: `${value}px` }} />)}
-                  </div>
-                </div>
-                <div className="analytics-card">
-                  <h3>Success rate</h3>
-                  <div className="ring">96%</div>
-                </div>
-                <div className="analytics-card">
-                  <h3>Gas usage</h3>
-                  <div className="mini-metric">0.0023 RIT</div>
-                </div>
-                <div className="analytics-card">
-                  <h3>Daily transactions</h3>
-                  <div className="mini-metric">12 today</div>
-                </div>
-              </div>
-            </div>
-          </motion.section>
-        );
-      case 'settings':
-        return (
-          <motion.section initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="panel-stack">
-            <div className="panel-card panel-card--wide">
-              <div className="panel-card__header">
-                <div>
-                  <p className="eyebrow">Settings</p>
-                  <h2>Configure your Ritual workspace</h2>
-                </div>
-              </div>
-              <div className="settings-grid">
-                <div className="settings-card">
-                  <h3>Theme</h3>
-                  <div className="chip-row">
-                    <span className="chip chip--active">Dark</span>
-                    <span className="chip">Aurora</span>
-                  </div>
-                </div>
-                <div className="settings-card">
-                  <h3>Preferred network</h3>
-                  <p>{chain?.name ?? 'Ritual network'}</p>
-                </div>
-                <div className="settings-card">
-                  <h3>RPC endpoint</h3>
-                  <p>https://rpc.ritual.network</p>
-                </div>
-                <div className="settings-card">
-                  <h3>Wallet settings</h3>
-                  <p>{isConnected ? 'Connected and ready for signature requests.' : 'Connect wallet to unlock transaction signatures.'}</p>
-                </div>
-                <div className="settings-card settings-card--wide">
-                  <h3>Notifications</h3>
-                  <p>Receipt, execution, and registry alerts stay enabled for every blockchain action.</p>
-                </div>
-              </div>
-            </div>
-          </motion.section>
-        );
       default:
-        return (
-          <motion.section initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="panel-stack">
-            <div className="hero-card">
-              <div className="hero-card__content">
-                <p className="eyebrow">Premium Web3 experience</p>
-                <h2>Ritual Skills are now easier to discover, register, and execute.</h2>
-                <p>Manage your on-chain skill inventory with a polished workspace designed for agents, builders, and operators.</p>
-                <div className="hero-actions">
-                  <button className="button button--primary" onClick={() => setActiveSection('register')}>Register Skill</button>
-                  <button className="button button--secondary" onClick={() => setActiveSection('execute')}>Execute Skill</button>
-                </div>
-              </div>
-              <div className="hero-card__status">
-                <div className="status-pill">Connected: {isConnected ? 'Online' : 'Offline'}</div>
-                <div className="status-pill">Network: {chain?.name ?? 'Pending'}</div>
-                <div className="status-pill">Balance: {balanceText}</div>
-              </div>
-            </div>
-
-            <div className="stats-grid">
-              <div className="stat-card">
-                <p>Connected wallet</p>
-                <h3>{isConnected ? shortAddress(address) : 'Not connected'}</h3>
-              </div>
-              <div className="stat-card">
-                <p>Current network</p>
-                <h3>{chain?.name ?? 'Unknown'}</h3>
-              </div>
-              <div className="stat-card">
-                <p>RIT balance</p>
-                <h3>{balanceText}</h3>
-              </div>
-              <div className="stat-card">
-                <p>Registered skills</p>
-                <h3>{skills.length}</h3>
-              </div>
-              <div className="stat-card">
-                <p>Total executions</p>
-                <h3>{history.filter((entry) => entry.action === 'Execute Skill').length}</h3>
-              </div>
-              <div className="stat-card">
-                <p>Successful executions</p>
-                <h3>{history.filter((entry) => entry.status === 'Confirmed').length}</h3>
-              </div>
-              <div className="stat-card">
-                <p>Gas used</p>
-                <h3>0.0023 RIT</h3>
-              </div>
-              <div className="stat-card">
-                <p>Active skills</p>
-                <h3>{skills.filter((skill) => skill.active).length}</h3>
-              </div>
-            </div>
-
-            <div className="panel-card">
-              <div className="panel-card__header">
-                <div>
-                  <p className="eyebrow">Live overview</p>
-                  <h2>Current portfolio snapshot</h2>
-                </div>
-              </div>
-              <div className="metrics-grid">
-                <div className="metrics-card">
-                  <p>Wallet status</p>
-                  <h3>{isConnected ? 'Ready to sign' : 'Connection required'}</h3>
-                </div>
-                <div className="metrics-card">
-                  <p>Registry status</p>
-                  <h3>{skills.length > 0 ? 'Skills available' : 'No skills yet'}</h3>
-                </div>
-                <div className="metrics-card">
-                  <p>Contract activity</p>
-                  <h3>{history.length} recent actions</h3>
-                </div>
-              </div>
-            </div>
-          </motion.section>
-        );
+        return null;
     }
   };
 
   return (
     <div className="premium-shell">
-      <aside className={`sidebar ${isMobileNavOpen ? 'is-open' : ''}`}>
+      <aside className={`sidebar ${isMobileNavOpen ? 'is-open' : ''}`} aria-label="Navigation menu">
         <div className="sidebar__brand">
           <RitualBrand compact />
         </div>
@@ -774,11 +543,11 @@ export default function SkillDashboard() {
         </div>
       </aside>
 
-      {isMobileNavOpen && <button type="button" className="sidebar-scrim" aria-label="Close navigation" onClick={() => setIsMobileNavOpen(false)} />}
+      {isMobileNavOpen && <div className="sidebar-scrim" aria-hidden="true" onClick={() => setIsMobileNavOpen(false)} />}
 
       <main className="dashboard-main">
         <header className="topbar">
-          <button className="mobile-nav-toggle" type="button" onClick={() => setIsMobileNavOpen((current) => !current)}>
+          <button className="mobile-nav-toggle" type="button" aria-label="Toggle navigation menu" onClick={() => setIsMobileNavOpen((current) => !current)}>
             ☰
           </button>
           <div className="topbar__title">
@@ -790,23 +559,17 @@ export default function SkillDashboard() {
           <div className="topbar__actions">
             <div className="top-pill">{chain?.name ?? 'Ritual Network'}</div>
             <div className="top-pill">{balanceText}</div>
-            <div className="top-pill">{isConnected ? shortAddress(address) : 'Not connected'}</div>
-            {!isConnected && (
-              <button
-                type="button"
-                className="button button--primary topbar-connect-btn"
-                onClick={() => connect({ connector: connectors[0] ?? injected() })}
-                disabled={connectPending}
-              >
-                {connectPending ? 'Connecting…' : 'Connect Wallet'}
-              </button>
-            )}
+            <button className="icon-button" type="button" aria-label="Wallet" onClick={() => setIsMobileNavOpen(true)}>
+              {isConnected ? '🔗' : '🔒'}
+            </button>
             <button className="icon-button" type="button" aria-label="Notifications">🔔</button>
             <button className="icon-button" type="button" aria-label="Settings">⚙️</button>
           </div>
         </header>
 
-        <AnimatePresence mode="wait">{renderSectionContent()}</AnimatePresence>
+        <AnimatePresence mode="wait">
+          {renderSectionContent()}
+        </AnimatePresence>
 
         <TransactionStatus title="Registration" isPending={isRegistering} isSuccess={isRegisterSuccess} isError={isRegisterError} error={registerError as Error | undefined} hash={createSkillWrite.data} />
         <TransactionStatus title="Execution" isPending={isRunning} isSuccess={isRunSuccess} isError={isRunError} error={runError as Error | undefined} hash={runSkillWrite.data} />
