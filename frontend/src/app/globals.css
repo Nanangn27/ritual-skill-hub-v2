@@ -299,4 +299,53 @@ tbody tr:hover { background: rgba(124,92,255,0.04); }
   .stats-grid, .market-grid, .skeleton-grid { grid-template-columns: 1fr; }
   .hero-actions { flex-direction: column; }
   .hero-actions .button { width: 100%; }
+  .topbar__title h1 { font-size: 18px; }
+  .toast-stack { left: 16px; right: 16px; bottom: 16px; }
+  .toast { min-width: 0; }
+}
+
+/* ---------- Mobile sidebar scrim ---------- */
+.sidebar-scrim { display: none; }
+@media (max-width: 820px) {
+  .sidebar-scrim {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    border: none;
+    background: rgba(6, 9, 20, 0.6);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    animation: scrim-in 0.2s ease;
+  }
+}
+@keyframes scrim-in { from { opacity: 0; } to { opacity: 1; } }
+
+/* ---------- Focus-visible (keyboard accessibility) ---------- */
+.nav-item:focus-visible,
+.icon-button:focus-visible,
+.mobile-nav-toggle:focus-visible,
+.button:focus-visible,
+.chip:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--violet);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+.top-pill:focus-visible { outline: 2px solid var(--violet); outline-offset: 2px; }
+
+/* ---------- Overflow safety ---------- */
+.hero-card__content h2 { overflow-wrap: break-word; }
+.stat-card h3, .metrics-card h3, .mini-metric { overflow-wrap: anywhere; }
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .progress-bar.is-active { animation: none; width: 100%; }
+  .skeleton-card { animation: none; }
 }

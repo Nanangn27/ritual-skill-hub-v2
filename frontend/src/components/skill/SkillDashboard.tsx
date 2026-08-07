@@ -478,8 +478,8 @@ export default function SkillDashboard() {
                     <article key={skill.id.toString()} className={`premium-skill-card ${skill.active ? 'is-active' : ''}`}>
                       <div className="premium-skill-card__head">
                         <div>
-                          <h3>{skill.name}</h3>
-                          <p>{skill.metadataCID}</p>
+                          <h3 title={skill.name}>{skill.name}</h3>
+                          <p title={skill.metadataCID}>{skill.metadataCID}</p>
                         </div>
                         <div className={`pill ${skill.active ? 'pill--success' : 'pill--muted'}`}>{skill.active ? 'Active' : 'Paused'}</div>
                       </div>
@@ -574,9 +574,9 @@ export default function SkillDashboard() {
                     {history.map((entry) => (
                       <tr key={entry.id}>
                         <td>{entry.timestamp}</td>
-                        <td>{entry.wallet}</td>
+                        <td title={entry.wallet}>{entry.wallet}</td>
                         <td>{entry.action}</td>
-                        <td>{entry.hash}</td>
+                        <td title={entry.hash}>{entry.hash}</td>
                         <td>{entry.gas}</td>
                         <td><span className={`status-badge ${entry.status.toLowerCase()}`}>{entry.status}</span></td>
                         <td>{entry.hash !== '—' ? <a href={`${explorerBase}/tx/${entry.hash}`} target="_blank" rel="noreferrer">Open</a> : '—'}</td>
@@ -746,10 +746,6 @@ export default function SkillDashboard() {
       <aside className={`sidebar ${isMobileNavOpen ? 'is-open' : ''}`}>
         <div className="sidebar__brand">
           <RitualBrand compact />
-          <div>
-            <p className="sidebar__title">Ritual Skill Hub</p>
-            <p className="sidebar__subtitle">Premium Web3 workspace</p>
-          </div>
         </div>
 
         <nav className="sidebar__nav">
@@ -778,13 +774,14 @@ export default function SkillDashboard() {
         </div>
       </aside>
 
+      {isMobileNavOpen && <button type="button" className="sidebar-scrim" aria-label="Close navigation" onClick={() => setIsMobileNavOpen(false)} />}
+
       <main className="dashboard-main">
         <header className="topbar">
           <button className="mobile-nav-toggle" type="button" onClick={() => setIsMobileNavOpen((current) => !current)}>
             ☰
           </button>
           <div className="topbar__title">
-            <RitualBrand compact />
             <div>
               <h1>Ritual Skill Hub</h1>
               <p>Premium Web3 operations for Ritual skills</p>
