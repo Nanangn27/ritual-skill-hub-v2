@@ -291,8 +291,7 @@ tbody tr:hover { background: rgba(124,92,255,0.04); }
 .bar:hover { opacity: 1; }
 .ring { width: 96px; height: 96px; border-radius: 50%; display: grid; place-items: center; font-size: 20px; font-weight: 700; background: conic-gradient(var(--violet) 96%, rgba(124,92,255,0.12) 0); position: relative; }
 .ring::before { content: ''; position: absolute; inset: 10px; border-radius: 50%; background: var(--panel-solid); }
-.ring { color: var(--text); }
-.ring > * , .ring { z-index: 1; }
+293|.ring > * , .ring { z-index: 1; }
 .mini-metric { font-size: 24px; font-weight: 700; letter-spacing: -0.02em; }
 
 /* ---------- Settings ---------- */
