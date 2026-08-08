@@ -1,3 +1,11 @@
+import { AnimatePresence, motion } from 'framer-motion';
+import { keccak256 } from 'viem';
+import { useAccount, useBalance, useConnect, useContractRead, useContractReads, useDisconnect, useWriteContract } from 'wagmi';
+import { injected } from 'wagmi/connectors';
+import RitualBrand from '@/components/common/RitualBrand';
+import TransactionStatus from '@/components/skill/TransactionStatus';
+import { skillExecutionConfig, skillRegistryConfig } from '@/lib/skillContracts';
+
 'use client';
 
 import { AnimatePresence, motion } from 'framer-motion';
@@ -9,12 +17,13 @@ import RitualBrand from '@/components/common/RitualBrand';
 import TransactionStatus from '@/components/skill/TransactionStatus';
 import { skillExecutionConfig, skillRegistryConfig } from '@/lib/skillContracts';
 
+// Define types locally to avoid dependency issues
 type Skill = {
   id: bigint;
-  provider: `0x${string}`;
+  provider: string;
   name: string;
   metadataCID: string;
-  systemPromptHash: `0x${string}`;
+  systemPromptHash: string;
   pricePerRun: bigint;
   active: boolean;
   createdAt: bigint;
@@ -103,6 +112,7 @@ export default function SkillDashboard() {
 
   const [activeSection, setActiveSection] = useState<NavSection>('dashboard');
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [selectedSkillIndex, setSelectedSkillIndex] = useState<number | null>(null);
   const [promptText, setPromptText] = useState('');
   const [registerState, setRegisterState] = useState({
@@ -205,10 +215,15 @@ export default function SkillDashboard() {
   const runError = runSkillWrite.error;
 
   useEffect(() => {
-    if (!isConnected) {
-      setSelectedSkillIndex(null);
+    const savedCollapsedState = localStorage.getItem('sidebarCollapsed');
+    if (savedCollapsedState !== null) {
+      setIsSidebarCollapsed(savedCollapsedState === 'true');
     }
-  }, [isConnected]);
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('sidebarCollapsed', isSidebarCollapsed.toString());
+  }, [isSidebarCollapsed]);
 
   useEffect(() => {
     if (isRegistering) {
@@ -599,7 +614,7 @@ export default function SkillDashboard() {
 
   return (
     <div className="premium-shell">
-      <aside className={`sidebar ${isMobileNavOpen ? 'is-open' : ''}`} aria-label="Navigation menu">
+      <aside className={`sidebar ${isMobileNavOpen ? 'is-open' : ''} ${isSidebarCollapsed ? 'is-collapsed' : ''}`} aria-label="Navigation menu">
         <div className="sidebar__brand">
           <RitualBrand compact />
         </div>
@@ -635,8 +650,11 @@ export default function SkillDashboard() {
 
       <main className="dashboard-main">
         <header className="topbar">
-          <button className="mobile-nav-toggle" type="button" aria-label="Toggle navigation menu" onClick={() => setIsMobileNavOpen((current) => !current)}>
+        <button className="mobile-nav-toggle" type="button" aria-label="Toggle navigation menu" onClick={() => setIsMobileNavOpen((current) => !current)}>
             ☰
+          </button>
+          <button className="desktop-nav-toggle" type="button" aria-label="Toggle sidebar" onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}>
+            {isSidebarCollapsed ? '≡' : '☰'}
           </button>
           <div className="topbar__title">
             <div>
