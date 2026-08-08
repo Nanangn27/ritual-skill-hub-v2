@@ -538,15 +538,10 @@ tbody tr:hover { background: rgba(124,92,255,0.04); }
     z-index: 40;
     border: none;
     background: rgba(6, 9, 20, 0.6);
-    backdrop-filter: blur(2px);
-    -webkit-backdrop-filter: blur(2px);
-    animation: scrim-in 0.2s ease;
   }
   .stats-grid, .market-grid, .skeleton-grid, .premium-skill-list, .analytics-grid, .settings-grid {
     grid-template-columns: 1fr !important;
   }
-  .execution-layout {
-    grid-template-columns: 1fr !important;
   .execution-layout {
     grid-template-columns: 1fr !important;
   }
