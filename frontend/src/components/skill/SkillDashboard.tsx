@@ -3,8 +3,8 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useMemo, useState } from 'react';
 import { keccak256 } from 'viem';
-import { useAccount, useBalance, useConnect, useContractRead, useContractReads, useDisconnect, useWriteContract } from 'wagmi';
-import { injected } from 'wagmi/connectors';
+import { useAccount, useBalance, useConnect, useContractRead, useContractReads, useDisconnect, useContractWrite } from 'wagmi';
+import { injected } from 'wagmi';
 import RitualBrand from '@/components/common/RitualBrand';
 import TransactionStatus from '@/components/skill/TransactionStatus';
 import { skillExecutionConfig, skillRegistryConfig } from '@/lib/skillContracts';
@@ -96,10 +96,10 @@ function getInitials(value: string) {
 }
 
 export default function SkillDashboard() {
-  const { address, isConnected, chain } = useAccount();
-  const { connect, connectors, isPending: connectPending } = useConnect();
+  const { address, isConnected } = useAccount();
+  const { connect, connectors, isLoading: connectPending } = useConnect();
   const { disconnect } = useDisconnect();
-  const { data: balanceData } = useBalance({ address, query: { enabled: !!address } });
+  const { data: balanceData } = useBalance({ address, enabled: !!address });
 
   const [activeSection, setActiveSection] = useState<NavSection>('dashboard');
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
@@ -185,7 +185,10 @@ export default function SkillDashboard() {
 
   const selectedSkill = selectedSkillIndex !== null ? skills[selectedSkillIndex] : null;
 
-  const createSkillWrite = useWriteContract({
+  const createSkillWrite = useContractWrite({
+    address: selectedSkill?.address,
+    abi: selectedSkill?.abi,
+    functionName: 'execute',
     mutation: {
       onSuccess: () => {
         refetchOwnedIds();
@@ -193,14 +196,18 @@ export default function SkillDashboard() {
     },
   });
 
-  const runSkillWrite = useWriteContract();
+  const runSkillWrite = useContractWrite({
+    address: selectedSkill?.address,
+    abi: selectedSkill?.abi,
+    functionName: 'execute',
+  });
 
-  const isRegistering = createSkillWrite.isPending;
+  const isRegistering = createSkillWrite.isLoading;
   const isRegisterError = createSkillWrite.isError;
   const isRegisterSuccess = createSkillWrite.isSuccess;
   const registerError = createSkillWrite.error;
 
-  const isRunning = runSkillWrite.isPending;
+  const isRunning = runSkillWrite.isLoading;
   const isRunError = runSkillWrite.isError;
   const isRunSuccess = runSkillWrite.isSuccess;
   const runError = runSkillWrite.error;
@@ -252,7 +259,7 @@ export default function SkillDashboard() {
     }
   }, [isRunError, runError]);
 
-  const explorerBase = chain?.blockExplorers?.default?.url ?? 'https://sepolia.etherscan.io';
+  const explorerBase = 'https://sepolia.etherscan.io';
   const balanceText = balanceData ? `${Number(balanceData.formatted).toFixed(3)} ${balanceData.symbol}` : '0.000 RIT';
 
   const validationIssues = useMemo(() => {
@@ -304,7 +311,7 @@ export default function SkillDashboard() {
       ...current,
     ].slice(0, 6));
 
-    createSkillWrite.writeContract({
+    createSkillWrite.write({
       ...skillRegistryConfig,
       functionName: 'createSkill',
       args: [registerState.name, registerState.metadataCID, hash, price],
@@ -327,7 +334,7 @@ export default function SkillDashboard() {
       ...current,
     ].slice(0, 6));
 
-    runSkillWrite.writeContract({
+    runSkillWrite.write({
       ...skillExecutionConfig,
       functionName: 'runSkill',
       args: [selectedSkill.id, promptText],
@@ -337,7 +344,7 @@ export default function SkillDashboard() {
 
   const handleToggleActive = async (skill: Skill) => {
     if (!isConnected) return;
-    createSkillWrite.writeContract({
+    createSkillWrite.write({
       ...skillRegistryConfig,
       functionName: 'toggleActive',
       args: [skill.id],
@@ -522,7 +529,7 @@ export default function SkillDashboard() {
                   {isConnected ? (
                     <div>
                       <div>{shortAddress(address)}</div>
-                      <div style={{ fontSize: '12px', color: 'var(--text-dim)' }}>{chain?.name}</div>
+                      <div style={{ fontSize: '12px', color: 'var(--text-dim)' }}>Ritual Network</div>
                     </div>
                   ) : (
                     <div>Not connected</div>
@@ -539,7 +546,7 @@ export default function SkillDashboard() {
               <div className="dashboard-card">
                 <h3>Ritual Network</h3>
                 <p>Your connected network</p>
-                <div className="value">{chain?.name || 'Not connected'}</div>
+                <div className="value">Ritual Network</div>
               </div>
 
               <div className="dashboard-card">
@@ -623,7 +630,7 @@ export default function SkillDashboard() {
             <div className="avatar">{address ? getInitials(shortAddress(address)) : 'R'}</div>
             <div>
               <p className="wallet-preview__title">{isConnected ? shortAddress(address) : 'Connect wallet'}</p>
-              <p className="wallet-preview__meta">{chain?.name ?? 'Ritual network'}</p>
+              <p className="wallet-preview__meta">Ritual Network</p>
             </div>
           </div>
           {isConnected ? (
@@ -654,13 +661,13 @@ export default function SkillDashboard() {
             </div>
           </div>
           <div className="topbar__actions">
-            <div className="top-pill">{chain?.name ?? 'Ritual Network'}</div>
+            <div className="top-pill">Ritual Network</div>
             <div className="top-pill">{balanceText}</div>
             {isConnected ? (
               <div className="topbar__wallet">
                 <div className="wallet-icon">🔗</div>
                 <div className="wallet-address">{shortAddress(address)}</div>
-                <div className="wallet-network">{chain?.name ?? 'Ritual'}</div>
+                <div className="wallet-network">Ritual Network</div>
               </div>
             ) : (
               <button

@@ -1,14 +1,15 @@
-import { http, createConfig } from 'wagmi';
-import { injected } from 'wagmi/connectors';
+import { createConfig } from 'wagmi';
+import { injected } from 'wagmi';
 import { ritualTestnet } from './chain';
 
 const rpcUrl = process.env.NEXT_PUBLIC_RPC_URL ?? '';
 
 export const wagmiConfig = createConfig({
-  chains: [ritualTestnet],
+  autoConnect: true,
   connectors: [injected()],
-  transports: {
-    [ritualTestnet.id]: http(rpcUrl || undefined),
+  publicClient: {
+    chain: ritualTestnet,
+    transport: rpcUrl ? (rpcUrl.startsWith('http') ? rpcUrl : `https://${rpcUrl}`) : undefined,
   },
   ssr: true,
 });
