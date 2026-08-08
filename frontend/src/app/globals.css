@@ -547,12 +547,9 @@ tbody tr:hover { background: rgba(124,92,255,0.04); }
   }
   .execution-layout {
     grid-template-columns: 1fr !important;
-  }
-}
   .execution-layout {
     grid-template-columns: 1fr !important;
   }
-}
 
 /* ---------- Mobile sidebar scrim ---------- */
 .sidebar-scrim { display: none; }
