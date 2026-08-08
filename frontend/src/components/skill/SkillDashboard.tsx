@@ -1,11 +1,3 @@
-import { AnimatePresence, motion } from 'framer-motion';
-import { keccak256 } from 'viem';
-import { useAccount, useBalance, useConnect, useContractRead, useContractReads, useDisconnect, useWriteContract } from 'wagmi';
-import { injected } from 'wagmi/connectors';
-import RitualBrand from '@/components/common/RitualBrand';
-import TransactionStatus from '@/components/skill/TransactionStatus';
-import { skillExecutionConfig, skillRegistryConfig } from '@/lib/skillContracts';
-
 'use client';
 
 import { AnimatePresence, motion } from 'framer-motion';
@@ -180,10 +172,10 @@ export default function SkillDashboard() {
       const values = Array.isArray(entry) ? entry : Object.values(entry as unknown as Record<string, unknown>);
       return {
         id: values[0] as bigint,
-        provider: values[1] as `0x${string}`,
+        provider: values[1] as string,
         name: values[2] as string,
         metadataCID: values[3] as string,
-        systemPromptHash: values[4] as `0x${string}`,
+        systemPromptHash: values[4] as string,
         pricePerRun: values[5] as bigint,
         active: values[6] as boolean,
         createdAt: values[7] as bigint,
@@ -537,19 +529,19 @@ export default function SkillDashboard() {
                   )}
                 </div>
               </div>
-              
+
               <div className="dashboard-card">
                 <h3>RIT Balance</h3>
                 <p>Your available RIT tokens</p>
                 <div className="value">{balanceText}</div>
               </div>
-              
+
               <div className="dashboard-card">
                 <h3>Ritual Network</h3>
                 <p>Your connected network</p>
                 <div className="value">{chain?.name || 'Not connected'}</div>
               </div>
-              
+
               <div className="dashboard-card">
                 <h3>Registered Skills</h3>
                 <p>Skills you own</p>
@@ -561,13 +553,13 @@ export default function SkillDashboard() {
                   View Skills
                 </button>
               </div>
-              
+
               <div className="dashboard-card">
                 <h3>Executed Skills</h3>
                 <p>Skills you&apos;ve executed</p>
                 <div className="value">—</div>
               </div>
-              
+
               <div className="dashboard-card">
                 <h3>Recent Activity</h3>
                 <p>Your recent transactions</p>
@@ -586,20 +578,20 @@ export default function SkillDashboard() {
                 </div>
               </div>
             </div>
-            
+
             <div className="quick-actions">
               <div className="quick-action" onClick={() => setActiveSection('register')}>
                 <div className="action-icon">📝</div>
                 <h4>Register Skill</h4>
                 <p>Create a new skill</p>
               </div>
-              
+
               <div className="quick-action" onClick={() => setActiveSection('execute')}>
                 <div className="action-icon">▶️</div>
                 <h4>Execute Skill</h4>
                 <p>Run an existing skill</p>
               </div>
-              
+
               <div className="quick-action" onClick={() => setActiveSection('marketplace')}>
                 <div className="action-icon">🛒</div>
                 <h4>Marketplace</h4>
@@ -649,7 +641,7 @@ export default function SkillDashboard() {
 
       <main className="dashboard-main">
         <header className="topbar">
-        <button className="mobile-nav-toggle" type="button" aria-label="Toggle navigation menu" onClick={() => setIsMobileNavOpen((current) => !current)}>
+          <button className="mobile-nav-toggle" type="button" aria-label="Toggle navigation menu" onClick={() => setIsMobileNavOpen((current) => !current)}>
             ☰
           </button>
           <button className="desktop-nav-toggle" type="button" aria-label="Toggle sidebar" onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}>
