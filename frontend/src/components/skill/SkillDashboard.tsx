@@ -550,7 +550,7 @@ export default function SkillDashboard() {
               
               <div className="dashboard-card">
                 <h3>Executed Skills</h3>
-                <p>Skills you've executed</p>
+                <p>Skills you&apos;ve executed</p>
                 <div className="value">—</div>
               </div>
               
