@@ -1,11 +1,8 @@
-'use client';
-
-import { injected } from 'wagmi';
 import { useAccount, useConnect, useDisconnect } from 'wagmi';
 
 export default function WalletConnect() {
   const { address, isConnected } = useAccount();
-  const { connect, connectors, isLoading: connectPending } = useConnect();
+  const { connect, connectors } = useConnect();
   const { disconnect } = useDisconnect();
 
   if (isConnected && address) {
@@ -31,10 +28,10 @@ export default function WalletConnect() {
       <button
         type="button"
         className="primary"
-        onClick={() => connect({ connector: injected() })}
-        disabled={connectPending}
+        onClick={() => connect()}
+        disabled={false}
       >
-        {connectPending ? 'Connecting…' : 'Connect Wallet'}
+        {false ? 'Connecting…' : 'Connect Wallet'}
       </button>
     </div>
   );

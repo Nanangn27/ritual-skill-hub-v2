@@ -4,7 +4,6 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useMemo, useState } from 'react';
 import { keccak256 } from 'viem';
 import { useAccount, useBalance, useConnect, useContractRead, useContractReads, useDisconnect, useContractWrite } from 'wagmi';
-import { injected } from 'wagmi';
 import RitualBrand from '@/components/common/RitualBrand';
 import TransactionStatus from '@/components/skill/TransactionStatus';
 import { skillExecutionConfig, skillRegistryConfig } from '@/lib/skillContracts';
@@ -99,7 +98,7 @@ function getInitials(value: string) {
 
 export default function SkillDashboard() {
   const { address, isConnected } = useAccount();
-  const { connect, connectors, isLoading: connectPending } = useConnect();
+  const { connect, connectors } = useConnect();
   const { disconnect } = useDisconnect();
   const { data: balanceData } = useBalance({ address, enabled: !!address });
 
@@ -638,8 +637,8 @@ export default function SkillDashboard() {
           {isConnected ? (
             <button className="button button--secondary" onClick={() => disconnect()}>Disconnect</button>
           ) : (
-            <button className="button button--primary" onClick={() => connect({ connector: connectors[0] ?? injected() })} disabled={connectPending}>
-              {connectPending ? 'Connecting…' : 'Connect Wallet'}
+            <button className="button button--primary" onClick={() => connect({ connector: connectors[0] })} disabled={false}>
+              {false ? 'Connecting…' : 'Connect Wallet'}
             </button>
           )}
         </div>
@@ -674,10 +673,10 @@ export default function SkillDashboard() {
             ) : (
               <button
                 className="button button--primary"
-                onClick={() => connect({ connector: connectors[0] ?? injected() })}
-                disabled={connectPending}
+                onClick={() => connect({ connector: connectors[0] })}
+                disabled={false}
               >
-                {connectPending ? 'Connecting…' : 'Connect Wallet'}
+                {false ? 'Connecting…' : 'Connect Wallet'}
               </button>
             )}
             <button className="icon-button" type="button" aria-label="Notifications">🔔</button>
