@@ -18,6 +18,8 @@ type Skill = {
   pricePerRun: bigint;
   active: boolean;
   createdAt: bigint;
+  address: string;
+  abi: any[];
 };
 
 type NavSection = 'dashboard' | 'register' | 'marketplace' | 'my-skills' | 'execute' | 'history' | 'analytics' | 'settings';
@@ -168,7 +170,7 @@ export default function SkillDashboard() {
       return [];
     }
 
-    return rawSkills.map((entry) => {
+    return rawSkills.map((entry: any) => {
       const values = Array.isArray(entry) ? entry : Object.values(entry as unknown as Record<string, unknown>);
       return {
         id: values[0] as bigint,
@@ -687,8 +689,8 @@ export default function SkillDashboard() {
           {renderSectionContent()}
         </AnimatePresence>
 
-        <TransactionStatus title="Registration" isPending={isRegistering} isSuccess={isRegisterSuccess} isError={isRegisterError} error={registerError as Error | undefined} hash={createSkillWrite.data} />
-        <TransactionStatus title="Execution" isPending={isRunning} isSuccess={isRunSuccess} isError={isRunError} error={runError as Error | undefined} hash={runSkillWrite.data} />
+        <TransactionStatus title="Registration" isPending={isRegistering} isSuccess={isRegisterSuccess} isError={isRegisterError} error={registerError as Error | undefined} hash={createSkillWrite.data?.hash as string | undefined} />
+        <TransactionStatus title="Execution" isPending={isRunning} isSuccess={isRunSuccess} isError={isRunError} error={runError as Error | undefined} hash={runSkillWrite.data?.hash as string | undefined} />
       </main>
 
       <div className="toast-stack" aria-live="polite">
