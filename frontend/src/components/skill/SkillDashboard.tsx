@@ -17,7 +17,6 @@ import RitualBrand from '@/components/common/RitualBrand';
 import TransactionStatus from '@/components/skill/TransactionStatus';
 import { skillExecutionConfig, skillRegistryConfig } from '@/lib/skillContracts';
 
-// Define types locally to avoid dependency issues
 type Skill = {
   id: bigint;
   provider: string;
