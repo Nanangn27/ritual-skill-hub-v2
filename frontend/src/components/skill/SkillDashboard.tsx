@@ -505,8 +505,95 @@ export default function SkillDashboard() {
             </div>
           </motion.section>
         );
-      default:
-        return null;
+      case 'dashboard':
+        return (
+          <motion.section initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="panel-stack">
+            <div className="dashboard-cards">
+              <div className="dashboard-card">
+                <h3>Wallet Status</h3>
+                <p>Your connected wallet and network</p>
+                <div className="value">
+                  {isConnected ? (
+                    <div>
+                      <div>{shortAddress(address)}</div>
+                      <div style={{ fontSize: '12px', color: 'var(--text-dim)' }}>{chain?.name}</div>
+                    </div>
+                  ) : (
+                    <div>Not connected</div>
+                  )}
+                </div>
+              </div>
+              
+              <div className="dashboard-card">
+                <h3>RIT Balance</h3>
+                <p>Your available RIT tokens</p>
+                <div className="value">{balanceText}</div>
+              </div>
+              
+              <div className="dashboard-card">
+                <h3>Ritual Network</h3>
+                <p>Your connected network</p>
+                <div className="value">{chain?.name || 'Not connected'}</div>
+              </div>
+              
+              <div className="dashboard-card">
+                <h3>Registered Skills</h3>
+                <p>Skills you own</p>
+                <div className="value">{skills.length}</div>
+                <button
+                  className="button button--secondary action-button"
+                  onClick={() => setActiveSection('my-skills')}
+                >
+                  View Skills
+                </button>
+              </div>
+              
+              <div className="dashboard-card">
+                <h3>Executed Skills</h3>
+                <p>Skills you've executed</p>
+                <div className="value">—</div>
+              </div>
+              
+              <div className="dashboard-card">
+                <h3>Recent Activity</h3>
+                <p>Your recent transactions</p>
+                <div className="value">
+                  {history.length > 0 ? (
+                    <div>
+                      {history.slice(0, 3).map((entry) => (
+                        <div key={entry.id} style={{ fontSize: '12px', marginBottom: '4px' }}>
+                          <span style={{ color: 'var(--text-dim)' }}>{entry.timestamp}</span> • {entry.action}
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div>No activity yet</div>
+                  )}
+                </div>
+              </div>
+            </div>
+            
+            <div className="quick-actions">
+              <div className="quick-action" onClick={() => setActiveSection('register')}>
+                <div className="action-icon">📝</div>
+                <h4>Register Skill</h4>
+                <p>Create a new skill</p>
+              </div>
+              
+              <div className="quick-action" onClick={() => setActiveSection('execute')}>
+                <div className="action-icon">▶️</div>
+                <h4>Execute Skill</h4>
+                <p>Run an existing skill</p>
+              </div>
+              
+              <div className="quick-action" onClick={() => setActiveSection('marketplace')}>
+                <div className="action-icon">🛒</div>
+                <h4>Marketplace</h4>
+                <p>Discover skills</p>
+              </div>
+            </div>
+          </motion.section>
+        );
     }
   };
 
@@ -541,6 +628,7 @@ export default function SkillDashboard() {
             </button>
           )}
         </div>
+        <button className="mobile-close-toggle" type="button" aria-label="Close navigation menu" onClick={() => setIsMobileNavOpen(false)} style={{ display: isMobileNavOpen ? 'block' : 'none' }}>✕</button>
       </aside>
 
       {isMobileNavOpen && <div className="sidebar-scrim" aria-hidden="true" onClick={() => setIsMobileNavOpen(false)} />}
@@ -559,9 +647,21 @@ export default function SkillDashboard() {
           <div className="topbar__actions">
             <div className="top-pill">{chain?.name ?? 'Ritual Network'}</div>
             <div className="top-pill">{balanceText}</div>
-            <button className="icon-button" type="button" aria-label="Wallet" onClick={() => setIsMobileNavOpen(true)}>
-              {isConnected ? '🔗' : '🔒'}
-            </button>
+            {isConnected ? (
+              <div className="topbar__wallet">
+                <div className="wallet-icon">🔗</div>
+                <div className="wallet-address">{shortAddress(address)}</div>
+                <div className="wallet-network">{chain?.name ?? 'Ritual'}</div>
+              </div>
+            ) : (
+              <button
+                className="button button--primary"
+                onClick={() => connect({ connector: connectors[0] ?? injected() })}
+                disabled={connectPending}
+              >
+                {connectPending ? 'Connecting…' : 'Connect Wallet'}
+              </button>
+            )}
             <button className="icon-button" type="button" aria-label="Notifications">🔔</button>
             <button className="icon-button" type="button" aria-label="Settings">⚙️</button>
           </div>
